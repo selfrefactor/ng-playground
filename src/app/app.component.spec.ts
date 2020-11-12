@@ -1,6 +1,19 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { Spectator, createComponentFactory } from '@ngneat/spectator';
+
+describe('AppComponent alt', () => {
+  let spectator: Spectator<AppComponent>;
+  const createComponent = createComponentFactory(AppComponent);
+
+  beforeEach(() => spectator = createComponent());
+
+  it('should have a success class by default', () => {
+    expect(spectator.query('button')).toHaveClass('btn btn-outline');
+  });
+});
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -11,6 +24,7 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent
       ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 
@@ -20,16 +34,4 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'foo'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('foo');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('foo app is running!');
-  });
 });
